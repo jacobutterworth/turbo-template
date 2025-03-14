@@ -1,0 +1,48 @@
+{
+  "linter": {
+    "enabled": true,
+    "ignore": [
+      "**/*.svelte"
+    ],
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "useButtonType": "off"
+      },
+      "suspicious": {
+        "noExplicitAny": {
+          "level": "warn"
+        },
+        "noArrayIndexKey": {
+          "level": "warn"
+        }
+      },
+      "correctness": {
+        "useExhaustiveDependencies": {
+          "level": "warn"
+        }
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": {
+          "level": "warn"
+        }
+      },
+      "complexity": {
+        "noUselessTernary": {
+          "level": "warn"
+        },
+        "noForEach": {
+          "level": "warn"
+        },
+        "noUselessFragments": {
+          "level": "warn"
+        }
+      },
+      "style": {
+        "useSelfClosingElements": {
+          "level": "warn"
+        }
+      }
+    }
+  }
+}
