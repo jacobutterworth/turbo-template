@@ -1,9 +1,9 @@
 <script lang="ts">
 	import '../app.css';
 	import DivButton from '$components/DivButton.svelte';
+	import { page } from '$app/state';
 	const { children } = $props();
 
-	// Navigation items
 	const navItems = [
 		{ href: '/', label: 'Home' },
 		{ href: '/docs', label: 'Documentation' },
@@ -11,14 +11,25 @@
 		{ href: '/about', label: 'About' }
 	];
 
-	// Mobile menu state
 	let isMobileMenuOpen = $state(false);
+
+	let isActive = $state((href: string) => {
+		const currentPath = page.url.pathname;
+		return href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+	});
+
+	$effect(() => {
+		const currentPath = page.url.pathname;
+		isActive = (href: string) => {
+			return href === '/' ? currentPath === '/' : currentPath.startsWith(href);
+		};
+	});
 </script>
 
 <div class="flex min-h-screen">
 	<!-- Sidebar for desktop -->
 	<aside class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col">
-		<div class="flex min-h-0 flex-1 flex-col bg-gray-800">
+		<div class="flex min-h-0 flex-1 flex-col bg-gray-600">
 			<div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
 				<div class="flex flex-shrink-0 items-center px-4">
 					<h1 class="text-2xl font-bold text-white">Your App</h1>
@@ -27,7 +38,12 @@
 					{#each navItems as item}
 						<a
 							href={item.href}
-							class="group flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+							class="group flex items-center rounded-md px-2 py-2 text-sm font-medium {isActive(
+								item.href
+							)
+								? 'bg-gray-700 text-white'
+								: 'text-gray-300 hover:bg-gray-700 hover:text-white'}"
+							aria-current={isActive(item.href) ? 'page' : undefined}
 						>
 							{item.label}
 						</a>
@@ -95,7 +111,12 @@
 						{#each navItems as item}
 							<a
 								href={item.href}
-								class="group flex items-center rounded-md px-2 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+								class="group flex items-center rounded-md px-2 py-2 text-base font-medium {isActive(
+									item.href
+								)
+									? 'bg-gray-700 text-white'
+									: 'text-gray-300 hover:bg-gray-700 hover:text-white'}"
+								aria-current={isActive(item.href) ? 'page' : undefined}
 							>
 								{item.label}
 							</a>
